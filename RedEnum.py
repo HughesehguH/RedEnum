@@ -1,9 +1,29 @@
-import sys, os
 from optparse import OptionParser
-
+import praw
 
 def main():
-  options = handleCommandArgs()
+    options = handleCommandArgs()
+    reddit = redditAuth()
+    account = reddit.redditor("appleaddict941")
+
+    for comment in account.comments.new(limit=None):
+        print(comment.body,"\n")
+
+    for submission in account.submissions.new():
+      print("\n\nSubreddit: "+submission.subreddit.display_name, "\nTitle: "+submission.title)
+    #print(account.comments)
+
+
+
+
+
+def redditAuth():
+    reddit = praw.Reddit(client_id="eZjs5QCd4n5OAg", client_secret = "fFjE8LsQwU9sNNTY__DHvm3dysc", user_agent="script by /u/RedEnum_bot")
+    if reddit.read_only == True:
+        return reddit
+    else:
+        print("Error: Could not authenticate to Reddit")
+        return 0
 
 
 ############################
