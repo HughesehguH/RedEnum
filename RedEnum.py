@@ -4,8 +4,10 @@ import praw
 def main():
     options = handleCommandArgs()
     reddit = redditAuth()
-    account = reddit.redditor("appleaddict941")
-
+    if reddit == 0:
+        return
+    
+    account = reddit.redditor(options.user)
     for comment in account.comments.new(limit=None):
         print(comment.body,"\n")
 
@@ -18,7 +20,7 @@ def main():
 
 
 def redditAuth():
-    reddit = praw.Reddit(client_id="eZjs5QCd4n5OAg", client_secret = "fFjE8LsQwU9sNNTY__DHvm3dysc", user_agent="script by /u/RedEnum_bot")
+    reddit = praw.Reddit("RedEnum", user_agent="script by /u/RedEnum_bot")
     if reddit.read_only == True:
         return reddit
     else:
